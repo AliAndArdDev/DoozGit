@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/player2_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -47,7 +47,7 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/player2_textView"
         app:layout_constraintStart_toEndOf="@+id/player1_textView"
         app:layout_constraintTop_toTopOf="parent" />
 
