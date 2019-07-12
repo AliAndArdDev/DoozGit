@@ -6,11 +6,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public class Ratings extends AppCompatActivity {
     ArrayList<String> standings;
     Intent intent;
     int accountsNumber;
-    boolean isOnQuickPlayMode, isOnTournamentMode;
+    boolean isOnQuickPlayMode, isOnTournamentMode, isPlayer1Selected = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +83,65 @@ public class Ratings extends AppCompatActivity {
             createAccountButton.setVisibility(View.VISIBLE);
         }
 
-        if (isOnQuickPlayMode){
+        if (isOnQuickPlayMode) {
             player1TextView.setVisibility(View.VISIBLE);
             versusTextView.setVisibility(View.VISIBLE);
             player2TextView.setVisibility(View.VISIBLE);
             doneButton.setVisibility(View.VISIBLE);
         }
+
+        player1TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPlayer1Selected = true;
+            }
+        });
+
+        player2TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPlayer1Selected = false;
+            }
+        });
+
+        ratings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (isOnQuickPlayMode) {
+                    if (isPlayer1Selected) {
+                        player1TextView.setText(standings.get(position));
+                    } else {
+                        player2TextView.setText(standings.get(position));
+                    }
+                } else if (isOnTournamentMode){
+
+                }
+            }
+        });
+
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOnQuickPlayMode) {
+                    if (player1TextView.getText().toString().equals("") || player2TextView.getText()
+                            .toString().equals("")) {
+                        Toast.makeText(Ratings.this, "Choose all players", Toast.LENGTH_SHORT).show();
+                    } else {
+                        intent = new Intent(Ratings.this, Game.class);
+                        intent.putExtra("player1", player1TextView.getText().toString());
+                        intent.putExtra("player2", player2TextView.getText().toString());
+                    }
+                }
+            }
+        });
+
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(Ratings.this, CreateAccount.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
